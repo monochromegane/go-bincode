@@ -1,4 +1,4 @@
-# go-bincode
+# go-bincode [![Build Status](https://travis-ci.org/monochromegane/go-bincode.svg?branch=master)](https://travis-ci.org/monochromegane/go-bincode)
 
 A tool for embedding Go code in a Go binary using go-bindata.
 
