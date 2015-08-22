@@ -40,7 +40,9 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 )
 `}
@@ -91,6 +93,15 @@ func init() {
 		}
 		os.Exit(0)
 	}
+
+	if restore {
+		binCoder{}.restoreCode()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		os.Exit(0)
+	}
 }
 `}
 
@@ -111,6 +122,25 @@ func (b binCoder) showCode(name string) error {
 		return err
 	}
 	fmt.Println(string(asset))
+	return nil
+}
+
+func (b binCoder) restoreCode() error {
+	for _, name := range AssetNames() {
+		// mkdir
+		if err := os.MkdirAll(filepath.Dir(name), 0755); err != nil {
+			return err
+		}
+		// write file
+		asset, err := Asset(name)
+		if err != nil {
+			return err
+		}
+		err = ioutil.WriteFile(name, asset, 0644)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 `}
