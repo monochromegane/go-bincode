@@ -8,9 +8,10 @@ import (
 )
 
 type bindata struct {
-	root    string
-	pkg     string
-	ignores []string
+	root      string
+	pkg       string
+	outputDir string
+	ignores   []string
 }
 
 func (b bindata) exec() error {
@@ -19,7 +20,7 @@ func (b bindata) exec() error {
 		return err
 	}
 
-	args := []string{"-o", "bincode.go", "-pkg", b.pkg}
+	args := []string{"-o", filepath.Join(b.outputDir, "bincode.go"), "-pkg", b.pkg}
 
 	if len(b.ignores) > 0 {
 		for _, i := range b.ignores {

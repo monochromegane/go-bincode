@@ -2,16 +2,21 @@ package bincode
 
 import "path/filepath"
 
-func Generate(root, pkg string, ignores []string) error {
+func Generate(root, pkg, outputDir string, ignores []string) error {
 	// generate code archive
-	err := bindata{root: ".", pkg: pkg, ignores: ignores}.exec()
+	err := bindata{
+		root:      ".",
+		pkg:       pkg,
+		outputDir: outputDir,
+		ignores:   ignores,
+	}.exec()
 	if err != nil {
 		return err
 	}
 
 	// generate bincoder
 	return writeToFile(
-		filepath.Join(root, "bincoder.go"),
+		filepath.Join(outputDir, "bincoder.go"),
 		codeTemplates.toString(),
 		binCode{Package: pkg},
 	)
