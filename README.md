@@ -2,9 +2,9 @@
 
 A tool for embedding Go code in a Go binary using go-bindata.
 
-## Usage
-
 ![go-bincode](https://cloud.githubusercontent.com/assets/1845486/9424618/4ada7c6a-492d-11e5-9958-73bc329ac35c.gif)
+
+## Usage
 
 1. Install go-bindata and go-bincode.
 2. Execute `go-bincode` command at your repository.
