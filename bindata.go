@@ -8,8 +8,9 @@ import (
 )
 
 type bindata struct {
-	root string
-	pkg  string
+	root    string
+	pkg     string
+	ignores []string
 }
 
 func (b bindata) exec() error {
@@ -19,6 +20,13 @@ func (b bindata) exec() error {
 	}
 
 	args := []string{"-o", "bincode.go", "-pkg", b.pkg}
+
+	if len(b.ignores) > 0 {
+		for _, i := range b.ignores {
+			args = append(args, "-ignore", i)
+		}
+	}
+
 	args = append(args, files...)
 	return exec.Command("go-bindata", args...).Run()
 }

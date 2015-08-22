@@ -2,9 +2,9 @@ package bincode
 
 import "path/filepath"
 
-func Generate(root, pkg string) error {
+func Generate(root, pkg string, ignores []string) error {
 	// generate code archive
-	err := bindata{root: ".", pkg: pkg}.exec()
+	err := bindata{root: ".", pkg: pkg, ignores: ignores}.exec()
 	if err != nil {
 		return err
 	}
