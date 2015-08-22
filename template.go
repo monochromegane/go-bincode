@@ -81,12 +81,12 @@ func init() {
 	}
 
 	if list {
-		binCoder{}.listCode()
+		newBinCoder().listCode()
 		os.Exit(0)
 	}
 
 	if code != "" {
-		err := binCoder{}.showCode(code)
+		err := newBinCoder().showCode(code)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
@@ -95,7 +95,7 @@ func init() {
 	}
 
 	if restore {
-		binCoder{}.restoreCode()
+		newBinCoder().restoreCode()
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
@@ -108,11 +108,17 @@ func init() {
 var binCoderTpl = &template{
 	name: "binCoder",
 	text: `
-type binCoder struct {}
+type binCoder struct {
+	writer io.Writer
+}
+
+func newBinCoder() *binCoder {
+	return &binCoder{writer: os.Stdout}
+}
 
 func (b binCoder) listCode() {
 	for _, a := range AssetNames() {
-		fmt.Println(a)
+		b.out(a)
 	}
 }
 
@@ -121,7 +127,7 @@ func (b binCoder) showCode(name string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(string(asset))
+	b.out(string(asset))
 	return nil
 }
 
@@ -142,5 +148,9 @@ func (b binCoder) restoreCode() error {
 		}
 	}
 	return nil
+}
+
+func (b binCoder) out(s string) {
+	fmt.Fprintln(b.writer, s)
 }
 `}
