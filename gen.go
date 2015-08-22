@@ -1,3 +1,4 @@
+//go:generate go run cmd/go-bincode/main.go -pkg bincode -ignore tests -output-dir tests
 package bincode
 
 import "path/filepath"

@@ -1,4 +1,3 @@
-//go:generate go run main.go -pkg bincode -ignore tests
 package main
 
 import (
